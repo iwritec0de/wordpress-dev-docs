@@ -1,0 +1,102 @@
+# Reference overrides for Example Plugin
+# These user-supplied tips and code examples appear inline on the generated docs site.
+
+functions:
+  example_plugin_get_option:
+    - type: tip
+      variant: info
+      content: >
+        Option keys are automatically prefixed with `example_plugin_`. Pass only the
+        short key (e.g. `'cache_ttl'`), not the full option name.
+    - type: code
+      label: Usage example
+      language: php
+      content: |
+        // Get a single option with a fallback default
+        $ttl = example_plugin_get_option( 'cache_ttl', 3600 );
+
+        // Check a boolean option
+        if ( example_plugin_get_option( 'enable_feature_a', false ) ) {
+            // Feature A is enabled
+        }
+
+  example_plugin_format_price:
+    - type: code
+      label: Formatting different currencies
+      language: php
+      content: |
+        echo example_plugin_format_price( 19.99 );          // "$19.99 USD"
+        echo example_plugin_format_price( 29.50, 'EUR' );   // "€29.50 EUR"
+        echo example_plugin_format_price( 15.00, 'GBP' );   // "£15.00 GBP"
+
+  example_plugin_log:
+    - type: tip
+      variant: warning
+      content: >
+        Messages are only written when `WP_DEBUG_LOG` is enabled. Never log
+        sensitive data (passwords, tokens, PII) — log entries are stored in
+        plain text at `wp-content/debug.log`.
+
+  example_plugin_is_active:
+    - type: tip
+      variant: info
+      content: >
+        Use this function in theme or third-party plugin code to conditionally
+        load features that depend on Example Plugin. It returns `false` until
+        after the `plugins_loaded` hook has fired.
+
+actions:
+  example_plugin_initialized:
+    - type: tip
+      variant: success
+      content: >
+        This is the recommended hook for other plugins to extend Example Plugin.
+        It fires after the plugin singleton is fully initialized, so all public
+        methods are available.
+    - type: code
+      label: Extending the plugin
+      language: php
+      content: |
+        add_action( 'example_plugin_loaded', function( $plugin ) {
+            // $plugin is the Example_Plugin instance
+            $plugin->register_addon( 'my-addon', new My_Addon() );
+        } );
+
+filters:
+  example_plugin_settings:
+    - type: code
+      label: Overriding default settings
+      language: php
+      content: |
+        add_filter( 'example_plugin_settings_defaults', function( $defaults ) {
+            $defaults['cache_ttl']        = 7200;   // 2 hours instead of 1
+            $defaults['enable_feature_b'] = true;    // Enable by default
+            return $defaults;
+        } );
+
+restEndpoints:
+  example-plugin/v1/settings:
+    - type: tip
+      variant: warning
+      content: >
+        Both GET and POST requests to this endpoint require the `manage_options`
+        capability. Unauthenticated or unprivileged requests receive a 403 response.
+    - type: code
+      label: Reading settings via the REST API
+      language: bash
+      content: |
+        # Get all settings (requires authentication)
+        curl -X GET https://example.com/wp-json/example-plugin/v1/settings \
+          -H "X-WP-Nonce: <nonce>"
+
+        # Get a single setting
+        curl -X GET "https://example.com/wp-json/example-plugin/v1/settings?key=cache_ttl" \
+          -H "X-WP-Nonce: <nonce>"
+
+constants:
+  EXAMPLE_PLUGIN_VERSION:
+    - type: tip
+      variant: info
+      content: >
+        This constant is set from the plugin header `Version` field during bootstrap.
+        Use it for cache-busting asset URLs and version checks in update routines.

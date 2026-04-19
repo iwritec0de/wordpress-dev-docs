@@ -1,0 +1,341 @@
+import { z } from 'zod';
+import { readFileSync, existsSync } from 'fs';
+import { join, resolve } from 'path';
+import type { ThemeDefinition } from './themes.js';
+import { loadCustomTheme, isCustomThemePath } from './themes.js';
+import { packageRootFrom } from '../../lib/package-root.js';
+
+// ─── Token schema ────────────────────────────────────────────────────────────
+
+const ColorTokens = z.object({
+  bg: z.string(),
+  fg: z.string(),
+  accent: z.string(),
+  'accent-fg': z.string(),
+  'accent-hover': z.string().optional(),
+  'accent-subtle': z.string().optional(),
+  muted: z.string(),
+  border: z.string(),
+  'code-bg': z.string(),
+  'code-fg': z.string().optional(),
+  'sidebar-bg': z.string(),
+  'sidebar-active': z.string(),
+  surface: z.string(),
+  'vis-public-bg': z.string().optional(),
+  'vis-public-fg': z.string().optional(),
+  'vis-protected-bg': z.string().optional(),
+  'vis-protected-fg': z.string().optional(),
+  'vis-private-bg': z.string().optional(),
+  'vis-private-fg': z.string().optional(),
+  'vis-static-bg': z.string().optional(),
+  'vis-static-fg': z.string().optional(),
+});
+
+const FontTokens = z.object({
+  sans: z.string(),
+  mono: z.string(),
+  display: z.string().optional(),
+});
+
+const RadiusTokens = z.object({
+  sm: z.string(),
+  md: z.string(),
+  lg: z.string(),
+  xl: z.string().optional(),
+});
+
+const ContainerTokens = z.object({
+  sidebar: z.string(),
+  content: z.string(),
+  toc: z.string(),
+});
+
+const TokensObject = z.object({
+  color: ColorTokens,
+  font: FontTokens,
+  radius: RadiusTokens,
+  container: ContainerTokens,
+});
+
+/** A complete skin file: name + light tokens + optional dark overrides */
+export const SkinSchema = z.object({
+  name: z.string().min(1),
+  tokens: TokensObject,
+  dark: TokensObject.partial().optional(),
+});
+
+export type Skin = z.infer<typeof SkinSchema>;
+export type TokenValues = z.infer<typeof TokensObject>;
+
+// ─── Built-in skin names ─────────────────────────────────────────────────────
+
+export const BUILT_IN_SKINS = [
+  'default',
+  'syntax',
+  'dark-pro',
+  'wordpress',
+  'terminal',
+  'sunset',
+  'midnight',
+  'sandstone',
+] as const;
+
+export type BuiltInSkinName = (typeof BUILT_IN_SKINS)[number];
+
+// ─── Skin loading ────────────────────────────────────────────────────────────
+
+const SKINS_DIR = join(packageRootFrom(import.meta.url), 'packages', 'site-template', 'skins');
+
+/**
+ * Load a built-in skin by name. Returns the parsed Skin object.
+ * Throws if the skin name is unknown or the file is invalid.
+ *
+ * Enforces an allowlist against {@link BUILT_IN_SKINS} to prevent path traversal
+ * via crafted skin names (e.g. "../../etc/passwd").
+ */
+export function loadBuiltInSkin(name: string): Skin {
+  if (!(BUILT_IN_SKINS as readonly string[]).includes(name)) {
+    throw new Error(`Unknown skin "${name}". Available: ${BUILT_IN_SKINS.join(', ')}`);
+  }
+  const skinPath = join(SKINS_DIR, `${name}.json`);
+  if (!existsSync(skinPath)) {
+    throw new Error(`Skin file missing on disk: ${skinPath}`);
+  }
+  return parseSkinFile(skinPath);
+}
+
+/**
+ * Load a skin from an arbitrary file path (for user-provided --tokens files).
+ */
+export function loadSkinFile(filePath: string, baseDir?: string): Skin {
+  const resolved = baseDir ? resolve(baseDir, filePath) : resolve(filePath);
+  if (!existsSync(resolved)) {
+    throw new Error(`Skin file not found: "${resolved}"`);
+  }
+  return parseSkinFile(resolved);
+}
+
+/**
+ * Parse and validate a skin JSON file with Zod. Warns on unknown keys but
+ * does not fail (uses passthrough + strip approach).
+ */
+function parseSkinFile(filePath: string): Skin {
+  const raw = readFileSync(filePath, 'utf8');
+  const json = JSON.parse(raw);
+  return SkinSchema.parse(json);
+}
+
+/**
+ * List all available built-in skins with their names.
+ */
+export function listSkins(): Skin[] {
+  return BUILT_IN_SKINS.map(loadBuiltInSkin);
+}
+
+// ─── CSS generation ──────────────────────────────────────────────────────────
+
+/** Map a flat token group into CSS custom property declarations. */
+function tokenGroupToCss(prefix: string, obj: Record<string, string | undefined>): string[] {
+  return Object.entries(obj)
+    .filter(([, value]) => value !== undefined)
+    .map(([key, value]) => `  --${prefix}-${key}: ${value};`);
+}
+
+/** Convert a full TokenValues object into an array of CSS declaration lines. */
+function tokensToCssLines(tokens: TokenValues): string[] {
+  return [
+    ...tokenGroupToCss('color', tokens.color),
+    '',
+    ...tokenGroupToCss('font', tokens.font),
+    '',
+    ...tokenGroupToCss('radius', tokens.radius),
+    '',
+    ...Object.entries(tokens.container).map(([k, v]) => `  --${k}-width: ${v};`),
+  ];
+}
+
+/**
+ * Generate the contents of `tokens.css` from a resolved skin.
+ * Produces `:root { ... }` and optionally `.dark { ... }` blocks.
+ */
+export function generateTokensCss(skin: Skin): string {
+  const header = [
+    '/*',
+    ` * Skin: ${skin.name}`,
+    ' * Generated by wpdocs — do not edit manually.',
+    ' */',
+    '',
+  ];
+
+  const rootLines = tokensToCssLines(skin.tokens);
+  const rootBlock = [':root {', ...rootLines, '}'];
+
+  const parts = [...header, ...rootBlock];
+
+  if (skin.dark) {
+    // Merge dark overrides on top of light tokens for a complete dark set
+    const darkTokens = mergeDarkOverrides(skin.tokens, skin.dark);
+    const darkLines = tokensToCssLines(darkTokens);
+    parts.push('', '.dark {', ...darkLines, '}');
+  }
+
+  return parts.join('\n') + '\n';
+}
+
+/** Deep-merge partial dark overrides onto the full light tokens. */
+function mergeDarkOverrides(light: TokenValues, dark: Partial<TokenValues>): TokenValues {
+  return {
+    color: { ...light.color, ...dark.color },
+    font: { ...light.font, ...dark.font },
+    radius: { ...light.radius, ...dark.radius },
+    container: { ...light.container, ...dark.container },
+  };
+}
+
+// ─── Legacy theme conversion ────────────────────────────────────────────────
+
+/**
+ * Convert a legacy ThemeDefinition (cssVars map) into the new Skin shape.
+ *
+ * Maps old CSS variable names to new token groups. Any tokens not covered by
+ * the legacy theme are filled from the default built-in skin.
+ */
+export function convertLegacyTheme(theme: ThemeDefinition): Skin {
+  const defaults = loadBuiltInSkin('default');
+
+  const color: Record<string, string> = { ...defaults.tokens.color };
+  const font: Record<string, string> = { ...defaults.tokens.font };
+
+  const vars = theme.cssVars;
+
+  // Map legacy CSS vars → new token keys
+  if (vars['--color-primary']) color['accent'] = vars['--color-primary'];
+  // --color-primary-dark is intentionally skipped (no equivalent token)
+  if (vars['--color-bg']) color['bg'] = vars['--color-bg'];
+  if (vars['--color-bg-secondary']) {
+    color['surface'] = vars['--color-bg-secondary'];
+    color['sidebar-bg'] = vars['--color-bg-secondary'];
+  }
+  if (vars['--color-text']) color['fg'] = vars['--color-text'];
+  if (vars['--color-text-muted']) color['muted'] = vars['--color-text-muted'];
+  if (vars['--color-border']) color['border'] = vars['--color-border'];
+  if (vars['--color-code-bg']) color['code-bg'] = vars['--color-code-bg'];
+  if (vars['--font-sans']) font['sans'] = vars['--font-sans'];
+  if (vars['--font-mono']) font['mono'] = vars['--font-mono'];
+
+  return {
+    name: theme.name,
+    tokens: {
+      color: color as TokenValues['color'],
+      font: font as TokenValues['font'],
+      radius: { ...defaults.tokens.radius },
+      container: { ...defaults.tokens.container },
+    },
+    dark: defaults.dark,
+  };
+}
+
+// ─── Config-level resolution ─────────────────────────────────────────────────
+
+/** Partial token overrides — a flat record of string→string per group. */
+interface TokenOverrides {
+  color?: Record<string, string>;
+  font?: Record<string, string>;
+  radius?: Record<string, string>;
+  container?: Record<string, string>;
+}
+
+function parseTokenOverrides(raw: unknown): TokenOverrides {
+  if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) {
+    throw new Error('Token overrides must be a JSON object.');
+  }
+  const obj = raw as Record<string, unknown>;
+  const result: TokenOverrides = {};
+  for (const key of ['color', 'font', 'radius', 'container'] as const) {
+    if (obj[key] !== undefined) {
+      if (typeof obj[key] !== 'object' || obj[key] === null) {
+        throw new Error(`Token overrides "${key}" must be an object.`);
+      }
+      const group: Record<string, string> = {};
+      for (const [k, v] of Object.entries(obj[key] as Record<string, unknown>)) {
+        group[k] = String(v);
+      }
+      result[key] = group;
+    }
+  }
+  return result;
+}
+
+/**
+ * Resolve skin + token overrides from config/CLI values.
+ *
+ * Priority:
+ *   1. `--tokens` file (partial overrides layered on top)
+ *   2. `--skin` (built-in name or path to a full skin file)
+ *   3. Legacy `--theme` (mapped to a built-in skin if one matches)
+ *   4. 'default' skin
+ */
+export function resolveSkinFromConfig(options: {
+  skin?: string;
+  tokens?: string;
+  theme?: string;
+  configDir?: string;
+}): Skin {
+  const { skin: skinFlag, tokens: tokensFlag, theme, configDir } = options;
+
+  // Step 1: resolve the base skin
+  let baseSkin: Skin;
+  if (skinFlag) {
+    if (skinFlag.startsWith('./') || skinFlag.startsWith('../') || skinFlag.startsWith('/')) {
+      baseSkin = loadSkinFile(skinFlag, configDir);
+    } else {
+      baseSkin = loadBuiltInSkin(skinFlag);
+    }
+  } else if (theme && isCustomThemePath(theme)) {
+    // Legacy --theme with a file path: load the old theme.json and convert
+    const legacyTheme = loadCustomTheme(theme, configDir ?? process.cwd());
+    baseSkin = convertLegacyTheme(legacyTheme);
+  } else if (theme && (BUILT_IN_SKINS as readonly string[]).includes(theme)) {
+    baseSkin = loadBuiltInSkin(theme);
+  } else {
+    baseSkin = loadBuiltInSkin('default');
+  }
+
+  // Step 2: layer token overrides if provided
+  if (!tokensFlag) return baseSkin;
+
+  const tokensPath = configDir ? resolve(configDir, tokensFlag) : resolve(tokensFlag);
+  if (!existsSync(tokensPath)) {
+    throw new Error(`Token overrides file not found: "${tokensPath}"`);
+  }
+  const raw = readFileSync(tokensPath, 'utf8');
+  const overrides = parseTokenOverrides(JSON.parse(raw));
+
+  const mergedTokens: TokenValues = {
+    color: { ...baseSkin.tokens.color, ...overrides.color },
+    font: { ...baseSkin.tokens.font, ...overrides.font },
+    radius: { ...baseSkin.tokens.radius, ...overrides.radius },
+    container: { ...baseSkin.tokens.container, ...overrides.container },
+  };
+
+  let mergedDark: Partial<TokenValues> | undefined;
+  if (baseSkin.dark) {
+    const d = baseSkin.dark;
+    mergedDark = {
+      ...(d.color || overrides.color
+        ? { color: { ...baseSkin.tokens.color, ...d.color, ...overrides.color } }
+        : {}),
+      ...(d.font || overrides.font
+        ? { font: { ...baseSkin.tokens.font, ...d.font, ...overrides.font } }
+        : {}),
+      ...(d.radius || overrides.radius
+        ? { radius: { ...baseSkin.tokens.radius, ...d.radius, ...overrides.radius } }
+        : {}),
+      ...(d.container || overrides.container
+        ? { container: { ...baseSkin.tokens.container, ...d.container, ...overrides.container } }
+        : {}),
+    };
+  }
+
+  return { ...baseSkin, tokens: mergedTokens, dark: mergedDark };
+}

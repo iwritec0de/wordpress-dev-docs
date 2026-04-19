@@ -1,0 +1,22 @@
+{
+  "name": "example-plugin",
+  "displayName": "Example Plugin",
+  "type": "plugin",
+  "description": "Full-featured plugin fixture exercising every parser path — PHP/JS/CSS, hooks, REST endpoints, blocks, overrides, guides, and changelog.",
+  "exercises": [
+    "php-functions",
+    "php-classes",
+    "php-constants",
+    "wp-hooks-actions",
+    "wp-hooks-filters",
+    "rest-endpoints",
+    "rest-fields",
+    "block-json",
+    "js-functions",
+    "css-tokens",
+    "readme",
+    "changelog",
+    "overrides",
+    "guides"
+  ]
+}

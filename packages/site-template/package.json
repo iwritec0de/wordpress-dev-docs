@@ -1,0 +1,12 @@
+{
+  "name": "@iwritec0de/wpdocs-site-template",
+  "version": "1.0.0",
+  "description": "Next.js 16 documentation site template for wpdocs",
+  "private": true,
+  "type": "module",
+  "main": "./index.js",
+  "files": ["template/", "index.js"],
+  "scripts": {
+    "test": "vitest run"
+  }
+}

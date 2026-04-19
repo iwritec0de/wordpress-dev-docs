@@ -1,0 +1,60 @@
+{
+  "name": "Syntax",
+  "tokens": {
+    "color": {
+      "bg": "#ffffff",
+      "fg": "#0f172a",
+      "accent": "#0ea5e9",
+      "accent-fg": "#ffffff",
+      "accent-hover": "#0284c7",
+      "accent-subtle": "#f0f9ff",
+      "muted": "#64748b",
+      "border": "#e2e8f0",
+      "code-bg": "#0f172a",
+      "code-fg": "#e2e8f0",
+      "sidebar-bg": "#f8fafc",
+      "sidebar-active": "#f0f9ff",
+      "surface": "#f8fafc",
+      "vis-public-bg": "#dcfce7",
+      "vis-public-fg": "#15803d",
+      "vis-protected-bg": "#fef3c7",
+      "vis-protected-fg": "#a16207",
+      "vis-private-bg": "#fee2e2",
+      "vis-private-fg": "#b91c1c",
+      "vis-static-bg": "#e0e7ff",
+      "vis-static-fg": "#4338ca"
+    },
+    "font": {
+      "sans": "'Inter', ui-sans-serif, system-ui, sans-serif",
+      "mono": "'JetBrains Mono', ui-monospace, monospace",
+      "display": "'Lexend', ui-sans-serif, system-ui, sans-serif"
+    },
+    "radius": { "sm": "4px", "md": "8px", "lg": "12px", "xl": "16px" },
+    "container": { "sidebar": "280px", "content": "720px", "toc": "240px" }
+  },
+  "dark": {
+    "color": {
+      "bg": "#0f172a",
+      "fg": "#e2e8f0",
+      "accent": "#38bdf8",
+      "accent-fg": "#0c1222",
+      "accent-hover": "#7dd3fc",
+      "accent-subtle": "#0c4a6e20",
+      "muted": "#94a3b8",
+      "border": "#1e293b",
+      "code-bg": "#020617",
+      "code-fg": "#e2e8f0",
+      "sidebar-bg": "#0c1222",
+      "sidebar-active": "#1e293b",
+      "surface": "#1e293b",
+      "vis-public-bg": "#14532d40",
+      "vis-public-fg": "#4ade80",
+      "vis-protected-bg": "#78350f40",
+      "vis-protected-fg": "#fbbf24",
+      "vis-private-bg": "#7f1d1d40",
+      "vis-private-fg": "#fca5a5",
+      "vis-static-bg": "#312e8140",
+      "vis-static-fg": "#a5b4fc"
+    }
+  }
+}

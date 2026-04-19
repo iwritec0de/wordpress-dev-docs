@@ -1,0 +1,17 @@
+{
+  "name": "example-plugin-suite",
+  "displayName": "Example Plugin Suite (collection)",
+  "type": "collection",
+  "description": "Collection fixture — base plugin plus two extension plugins exercising cross-plugin hooks, grouped nav, and multi-source parsing.",
+  "exercises": [
+    "collection-mode",
+    "collection-groups",
+    "cross-plugin-hooks",
+    "php-functions",
+    "php-classes",
+    "wp-hooks-actions",
+    "wp-hooks-filters",
+    "rest-endpoints",
+    "guides"
+  ]
+}

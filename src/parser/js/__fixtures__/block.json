@@ -1,0 +1,15 @@
+{
+  "apiVersion": 2,
+  "name": "example-plugin/example-block",
+  "title": "Example Block",
+  "category": "widgets",
+  "description": "An example Gutenberg block",
+  "keywords": ["example", "test"],
+  "attributes": {
+    "message": { "type": "string", "default": "" },
+    "align": { "type": "string", "default": "none" }
+  },
+  "supports": { "html": false, "align": true },
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css"
+}

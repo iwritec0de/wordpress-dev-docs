@@ -1,0 +1,12 @@
+{
+    "name": "iwritec0de/wordpress-dev-docs",
+    "authors": [
+        {
+            "name": "Chris Kelley",
+            "email": "hello@iwritecode.io"
+        }
+    ],
+    "require-dev": {
+        "php-stubs/wordpress-stubs": "^6.9"
+    }
+}

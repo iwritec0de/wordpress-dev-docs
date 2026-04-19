@@ -1,0 +1,16 @@
+{
+  "name": "example-theme",
+  "displayName": "Example Theme",
+  "type": "theme",
+  "description": "Block theme fixture — style.css header, theme.json, templates, template parts, guides, and changelog.",
+  "exercises": [
+    "theme-style-header",
+    "theme-json",
+    "block-templates",
+    "template-parts",
+    "php-functions",
+    "css-tokens",
+    "guides",
+    "changelog"
+  ]
+}

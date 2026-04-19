@@ -1,0 +1,23 @@
+{
+  "name": "Example Plugin Suite",
+  "version": "1.0.0",
+  "type": "collection",
+  "source": "./",
+  "exclude": ["vendor/**", "node_modules/**"],
+  "output": "../../output/example-plugin-suite",
+  "guides": "./guides",
+  "skin": "default",
+  "site": {
+    "title": "Example Plugin Suite Docs",
+    "description": "Developer documentation for the Example Plugin Suite — a base plugin with two extensions",
+    "githubUrl": "https://github.com/example/example-plugin-suite"
+  },
+  "mcp": {
+    "enabled": true,
+    "output": "../../output/example-plugin-suite-mcp"
+  },
+  "groups": [
+    { "name": "Core", "plugins": ["example-base"] },
+    { "name": "Extensions", "plugins": ["example-extension-maps", "example-extension-analytics"] }
+  ]
+}

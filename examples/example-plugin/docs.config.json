@@ -1,0 +1,23 @@
+{
+  "name": "Example Plugin Developer Docs",
+  "version": "1.2.0",
+  "type": "plugin",
+  "source": "./",
+  "exclude": ["vendor/**", "node_modules/**"],
+  "output": "../../output/example-plugin",
+  "guides": "./guides",
+  "overrides": "overrides.yaml",
+  "skin": "syntax",
+  "site": {
+    "title": "Example Plugin Docs",
+    "description": "Developer documentation for Example Plugin",
+    "githubUrl": "https://github.com/example/example-plugin",
+    "navLinks": [
+      { "label": "Support", "href": "https://example.com/support" }
+    ]
+  },
+  "mcp": {
+    "enabled": true,
+    "output": "../../output/example-plugin-mcp"
+  }
+}

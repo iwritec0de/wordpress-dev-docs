@@ -1,0 +1,22 @@
+{
+  "name": "Example Theme Developer Docs",
+  "version": "1.0.0",
+  "type": "theme",
+  "source": "./",
+  "exclude": ["vendor/**", "node_modules/**"],
+  "output": "../../output/example-theme",
+  "guides": "./guides",
+  "skin": "default",
+  "site": {
+    "title": "Example Theme Docs",
+    "description": "Developer documentation for Example Theme",
+    "githubUrl": "https://github.com/example/example-theme",
+    "navLinks": [
+      { "label": "WordPress.org", "href": "https://wordpress.org/themes/example-theme" }
+    ]
+  },
+  "mcp": {
+    "enabled": true,
+    "output": "../../output/example-theme-mcp"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "workspaces": {
+    ".": {
+      "ignore": [
+        "packages/site-template/template/**",
+        "examples/**",
+        "src/parser/js/__fixtures__/**"
+      ],
+      "ignoreDependencies": [
+        "@iwritec0de/wpdocs-site-template"
+      ]
+    },
+    "packages/site-template": {
+      "ignore": ["template/**"]
+    }
+  }
+}

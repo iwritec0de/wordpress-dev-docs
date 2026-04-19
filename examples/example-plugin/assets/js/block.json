@@ -1,0 +1,14 @@
+{
+  "apiVersion": 2,
+  "name": "example-plugin/example-block",
+  "title": "Example Block",
+  "category": "widgets",
+  "description": "An example Gutenberg block registered in the example plugin.",
+  "keywords": ["example", "gutenberg"],
+  "attributes": {
+    "message": { "type": "string", "default": "" }
+  },
+  "supports": { "html": false },
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css"
+}

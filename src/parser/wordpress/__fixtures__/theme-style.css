@@ -1,0 +1,19 @@
+/*
+Theme Name:  My Awesome Theme
+Theme URI:   https://example.com/my-awesome-theme
+Description: A realistic WordPress theme demonstrating the standard stylesheet header.
+Version:     1.0.0
+Author:      Jane Doe
+Author URI:  https://example.com
+License:     GPL-2.0+
+Text Domain: my-awesome-theme
+Template:    twentytwentyfour
+Tags:        blog, portfolio, responsive-layout, custom-colors, custom-menu
+*/
+
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}

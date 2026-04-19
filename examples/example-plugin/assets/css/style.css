@@ -1,0 +1,237 @@
+/**
+ * Example Plugin Stylesheet
+ *
+ * Provides front-end styles for Example Plugin. Uses CSS custom properties
+ * (design tokens) defined on :root so that themes can override individual
+ * values without specificity fights. A `.dark-mode` class on <body> or any
+ * ancestor element switches the token values to their dark-mode equivalents.
+ *
+ * @package   ExamplePlugin
+ * @since     1.0.0
+ * @version   1.2.0
+ *
+ * Table of Contents
+ * -----------------
+ *  1. Design Tokens (:root)
+ *  2. Dark Mode Overrides (.dark-mode)
+ *  3. Base Layout
+ *  4. Typography
+ *  5. Components — Cards
+ *  6. Components — Notices
+ *  7. Utilities
+ */
+
+/* =============================================================================
+   1. Design Tokens (:root)
+   ============================================================================= */
+
+:root {
+	/* --- Color — Brand --- */
+	/** @token Primary brand colour used for buttons, links, and highlights. */
+	--example-plugin-color-primary: #2563eb;
+
+	/** @token Secondary accent colour used for badges and hover states. */
+	--example-plugin-color-secondary: #7c3aed;
+
+	/** @token Neutral background colour for card and panel surfaces. */
+	--example-plugin-color-surface: #ffffff;
+
+	/** @token Default body text colour. */
+	--example-plugin-color-text: #111827;
+
+	/** @token Subdued text colour for captions and helper copy. */
+	--example-plugin-color-text-muted: #6b7280;
+
+	/** @token Thin border colour for dividers and input outlines. */
+	--example-plugin-color-border: #e5e7eb;
+
+	/* --- Color — Semantic --- */
+	/** @token Background colour for success / positive status messages. */
+	--example-plugin-color-success: #16a34a;
+
+	/** @token Background colour for warning / caution messages. */
+	--example-plugin-color-warning: #d97706;
+
+	/** @token Background colour for error / destructive action messages. */
+	--example-plugin-color-error: #dc2626;
+
+	/* --- Typography --- */
+	/** @token Base font size applied to body copy inside plugin components. */
+	--example-plugin-font-size-base: 1rem;
+
+	/** @token Small font size for captions, labels, and helper text. */
+	--example-plugin-font-size-sm: 0.875rem;
+
+	/** @token Large font size for section headings inside plugin components. */
+	--example-plugin-font-size-lg: 1.25rem;
+
+	/** @token Font family stack for body copy. */
+	--example-plugin-font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+		"Helvetica Neue", Arial, sans-serif;
+
+	/** @token Base line-height for body copy. */
+	--example-plugin-line-height: 1.5;
+
+	/* --- Spacing --- */
+	/** @token Extra-small spacing unit (4 px). */
+	--example-plugin-spacing-xs: 0.25rem;
+
+	/** @token Small spacing unit (8 px) — inner padding for compact elements. */
+	--example-plugin-spacing-sm: 0.5rem;
+
+	/** @token Medium spacing unit (16 px) — default padding and gap. */
+	--example-plugin-spacing-md: 1rem;
+
+	/** @token Large spacing unit (24 px) — section padding and outer margins. */
+	--example-plugin-spacing-lg: 1.5rem;
+
+	/** @token Extra-large spacing unit (32 px) — generous section separation. */
+	--example-plugin-spacing-xl: 2rem;
+
+	/* --- Border --- */
+	/** @token Default border radius for cards and buttons. */
+	--example-plugin-radius: 0.375rem;
+
+	/** @token Larger radius for modals and prominent containers. */
+	--example-plugin-radius-lg: 0.75rem;
+
+	/* --- Shadows --- */
+	/** @token Subtle box-shadow for elevated card surfaces. */
+	--example-plugin-shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+
+	/** @token Prominent box-shadow for dropdowns and popovers. */
+	--example-plugin-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+	/* --- Transitions --- */
+	/** @token Default transition duration for hover and focus states. */
+	--example-plugin-transition: 150ms ease-in-out;
+}
+
+/* =============================================================================
+   2. Dark Mode Overrides (.dark-mode)
+   ============================================================================= */
+
+.dark-mode {
+	--example-plugin-color-primary: #60a5fa;
+	--example-plugin-color-secondary: #a78bfa;
+	--example-plugin-color-surface: #1f2937;
+	--example-plugin-color-text: #f9fafb;
+	--example-plugin-color-text-muted: #9ca3af;
+	--example-plugin-color-border: #374151;
+}
+
+/* =============================================================================
+   3. Base Layout
+   ============================================================================= */
+
+.example-plugin-wrap {
+	font-family: var(--example-plugin-font-family);
+	font-size: var(--example-plugin-font-size-base);
+	line-height: var(--example-plugin-line-height);
+	color: var(--example-plugin-color-text);
+	max-width: 900px;
+	margin: 0 auto;
+	padding: var(--example-plugin-spacing-lg);
+}
+
+/* =============================================================================
+   4. Typography
+   ============================================================================= */
+
+.example-plugin-wrap h2 {
+	font-size: var(--example-plugin-font-size-lg);
+	font-weight: 600;
+	color: var(--example-plugin-color-text);
+	margin-bottom: var(--example-plugin-spacing-md);
+}
+
+.example-plugin-wrap p {
+	color: var(--example-plugin-color-text-muted);
+	margin-bottom: var(--example-plugin-spacing-sm);
+}
+
+/* =============================================================================
+   5. Components — Cards
+   ============================================================================= */
+
+.example-plugin-card {
+	background-color: var(--example-plugin-color-surface);
+	border: 1px solid var(--example-plugin-color-border);
+	border-radius: var(--example-plugin-radius);
+	box-shadow: var(--example-plugin-shadow-sm);
+	padding: var(--example-plugin-spacing-lg);
+	margin-bottom: var(--example-plugin-spacing-md);
+	transition: box-shadow var(--example-plugin-transition);
+}
+
+.example-plugin-card:hover {
+	box-shadow: var(--example-plugin-shadow-md);
+}
+
+.example-plugin-card__title {
+	font-size: var(--example-plugin-font-size-lg);
+	font-weight: 600;
+	color: var(--example-plugin-color-primary);
+	margin: 0 0 var(--example-plugin-spacing-sm);
+}
+
+.example-plugin-card__body {
+	color: var(--example-plugin-color-text-muted);
+	font-size: var(--example-plugin-font-size-sm);
+}
+
+/* =============================================================================
+   6. Components — Notices
+   ============================================================================= */
+
+.example-plugin-notice {
+	border-left: 4px solid var(--example-plugin-color-primary);
+	background-color: var(--example-plugin-color-surface);
+	padding: var(--example-plugin-spacing-md);
+	border-radius: 0 var(--example-plugin-radius) var(--example-plugin-radius) 0;
+	margin-bottom: var(--example-plugin-spacing-md);
+}
+
+.example-plugin-notice--success {
+	border-left-color: var(--example-plugin-color-success);
+}
+
+.example-plugin-notice--warning {
+	border-left-color: var(--example-plugin-color-warning);
+}
+
+.example-plugin-notice--error {
+	border-left-color: var(--example-plugin-color-error);
+}
+
+/* =============================================================================
+   7. Utilities
+   ============================================================================= */
+
+.example-plugin-sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border-width: 0;
+}
+
+.example-plugin-text-muted {
+	color: var(--example-plugin-color-text-muted);
+	font-size: var(--example-plugin-font-size-sm);
+}
+
+.example-plugin-badge {
+	display: inline-flex;
+	align-items: center;
+	padding: var(--example-plugin-spacing-xs) var(--example-plugin-spacing-sm);
+	border-radius: var(--example-plugin-radius);
+	font-size: var(--example-plugin-font-size-sm);
+	font-weight: 500;
+	background-color: var(--example-plugin-color-secondary);
+	color: #fff;
+}

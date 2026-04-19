@@ -1,0 +1,109 @@
+/*
+Theme Name:       Example Theme
+Theme URI:        https://example.com/themes/example-theme
+Description:      A minimal WordPress block theme demonstrating theme.json, template parts, custom hooks, and design tokens. Used as a test fixture for wordpress-dev-docs.
+Version:          1.0.0
+Author:           Example Author
+Author URI:       https://example.com
+License:          GPL-2.0-or-later
+Text Domain:      example-theme
+Tags:             block-theme, full-site-editing, custom-colors, custom-fonts, wide-blocks
+Requires at least: 6.4
+Requires PHP:     8.0
+*/
+
+/* =============================================================================
+   Design Tokens (:root)
+   ============================================================================= */
+
+:root {
+  /* --- Color --- */
+  /** @token Primary brand colour for buttons, links, and focus rings. */
+  --example-theme-color-primary: #1d4ed8;
+
+  /** @token Secondary accent colour for badges and decorative elements. */
+  --example-theme-color-secondary: #9333ea;
+
+  /** @token Page background colour. */
+  --example-theme-color-background: #ffffff;
+
+  /** @token Default body text colour. */
+  --example-theme-color-text: #1f2937;
+
+  /** @token Subdued text colour for captions and meta. */
+  --example-theme-color-text-muted: #6b7280;
+
+  /** @token Border colour for cards and separators. */
+  --example-theme-color-border: #e5e7eb;
+
+  /** @token Surface colour for cards and panels. */
+  --example-theme-color-surface: #f9fafb;
+
+  /* --- Typography --- */
+  /** @token Base font size for body copy. */
+  --example-theme-font-size-base: 1rem;
+
+  /** @token Small font size for captions and labels. */
+  --example-theme-font-size-sm: 0.875rem;
+
+  /** @token Large font size for headings. */
+  --example-theme-font-size-lg: 1.25rem;
+
+  /** @token Display font size for hero headings. */
+  --example-theme-font-size-xl: 2rem;
+
+  /** @token Body font family stack. */
+  --example-theme-font-family: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /** @token Heading font family stack. */
+  --example-theme-font-family-heading: 'Lexend', system-ui, sans-serif;
+
+  /* --- Spacing --- */
+  /** @token Small spacing unit (8px). */
+  --example-theme-spacing-sm: 0.5rem;
+
+  /** @token Medium spacing unit (16px). */
+  --example-theme-spacing-md: 1rem;
+
+  /** @token Large spacing unit (24px). */
+  --example-theme-spacing-lg: 1.5rem;
+
+  /** @token Extra-large spacing unit (48px). */
+  --example-theme-spacing-xl: 3rem;
+
+  /* --- Border --- */
+  /** @token Default border radius for buttons and cards. */
+  --example-theme-radius: 0.375rem;
+
+  /** @token Large border radius for containers and modals. */
+  --example-theme-radius-lg: 0.75rem;
+}
+
+/* =============================================================================
+   Base Layout
+   ============================================================================= */
+
+body {
+  font-family: var(--example-theme-font-family);
+  font-size: var(--example-theme-font-size-base);
+  color: var(--example-theme-color-text);
+  background-color: var(--example-theme-color-background);
+}
+
+.site-header {
+  border-bottom: 1px solid var(--example-theme-color-border);
+  padding: var(--example-theme-spacing-md) var(--example-theme-spacing-lg);
+}
+
+.site-footer {
+  border-top: 1px solid var(--example-theme-color-border);
+  padding: var(--example-theme-spacing-md) var(--example-theme-spacing-lg);
+  color: var(--example-theme-color-text-muted);
+  font-size: var(--example-theme-font-size-sm);
+}
+
+.site-content {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--example-theme-spacing-xl) var(--example-theme-spacing-lg);
+}

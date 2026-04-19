@@ -1,0 +1,60 @@
+{
+  "name": "Sunset",
+  "tokens": {
+    "color": {
+      "bg": "#fffbf5",
+      "fg": "#292524",
+      "accent": "#ea580c",
+      "accent-fg": "#ffffff",
+      "accent-hover": "#c2410c",
+      "accent-subtle": "#fff7ed",
+      "muted": "#78716c",
+      "border": "#e7e5e4",
+      "code-bg": "#fef3c7",
+      "code-fg": "#451a03",
+      "sidebar-bg": "#fef7ed",
+      "sidebar-active": "#fff1e0",
+      "surface": "#fef7ed",
+      "vis-public-bg": "#dcfce7",
+      "vis-public-fg": "#15803d",
+      "vis-protected-bg": "#fef3c7",
+      "vis-protected-fg": "#a16207",
+      "vis-private-bg": "#fee2e2",
+      "vis-private-fg": "#b91c1c",
+      "vis-static-bg": "#e0e7ff",
+      "vis-static-fg": "#4338ca"
+    },
+    "font": {
+      "sans": "'DM Sans', ui-sans-serif, system-ui, sans-serif",
+      "mono": "'Fira Code', ui-monospace, monospace",
+      "display": "'DM Sans', ui-sans-serif, system-ui, sans-serif"
+    },
+    "radius": { "sm": "6px", "md": "10px", "lg": "16px" },
+    "container": { "sidebar": "280px", "content": "720px", "toc": "240px" }
+  },
+  "dark": {
+    "color": {
+      "bg": "#1c1917",
+      "fg": "#fafaf9",
+      "accent": "#fb923c",
+      "accent-fg": "#1c1917",
+      "accent-hover": "#fdba74",
+      "accent-subtle": "#7c2d1220",
+      "muted": "#a8a29e",
+      "border": "#44403c",
+      "code-bg": "#292524",
+      "code-fg": "#e7e5e4",
+      "sidebar-bg": "#1c1917",
+      "sidebar-active": "#292524",
+      "surface": "#292524",
+      "vis-public-bg": "#14532d40",
+      "vis-public-fg": "#4ade80",
+      "vis-protected-bg": "#78350f40",
+      "vis-protected-fg": "#fbbf24",
+      "vis-private-bg": "#7f1d1d40",
+      "vis-private-fg": "#fca5a5",
+      "vis-static-bg": "#312e8140",
+      "vis-static-fg": "#a5b4fc"
+    }
+  }
+}

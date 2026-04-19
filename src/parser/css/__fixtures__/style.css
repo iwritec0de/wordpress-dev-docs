@@ -1,0 +1,31 @@
+/**
+ * My Plugin Styles
+ *
+ * Main stylesheet for My Plugin.
+ * @version 1.0.0
+ */
+
+:root {
+  /* Primary brand color */
+  --color-primary: #2563eb;
+
+  /* Secondary brand color */
+  --color-secondary: #7c3aed;
+
+  /* Base font size */
+  --font-size-base: 16px;
+
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 32px;
+}
+
+.dark-mode {
+  --color-primary: #60a5fa;
+  --color-secondary: #a78bfa;
+}
+
+.my-plugin-card {
+  color: var(--color-primary);
+  font-size: var(--font-size-base);
+}

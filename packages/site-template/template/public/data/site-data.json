@@ -1,0 +1,596 @@
+{
+  "schemaVersion": 1,
+  "meta": {
+    "title": "WP Commerce Toolkit",
+    "description": "A full-featured e-commerce toolkit for WordPress — products, carts, checkout, and payment gateway integrations.",
+    "version": "2.4.0",
+    "baseUrl": "/",
+    "logo": null,
+    "generatedAt": "2026-04-09T12:00:00.000Z"
+  },
+  "reference": {
+    "name": "wp-commerce-toolkit",
+    "version": "2.4.0",
+    "description": "A full-featured e-commerce toolkit for WordPress.",
+    "functions": [
+      {
+        "name": "wct_get_product",
+        "description": "Retrieve a product by ID or slug. Returns a WCT_Product instance or null if not found.",
+        "params": [
+          { "name": "$id_or_slug", "type": "int|string", "description": "Product ID or slug.", "optional": false },
+          { "name": "$args", "type": "array", "description": "Optional query arguments. Supports 'include_meta' and 'cache' keys.", "optional": true }
+        ],
+        "returns": { "type": "WCT_Product|null", "description": "Product object or null." },
+        "since": "1.0.0",
+        "deprecated": null,
+        "file": "includes/products.php",
+        "line": 42
+      },
+      {
+        "name": "wct_add_to_cart",
+        "description": "Add a product to the current session cart. Fires the 'wct_cart_item_added' action on success.",
+        "params": [
+          { "name": "$product_id", "type": "int", "description": "The product ID to add.", "optional": false },
+          { "name": "$quantity", "type": "int", "description": "Quantity to add. Defaults to 1.", "optional": true },
+          { "name": "$variation", "type": "array", "description": "Variation attributes for variable products.", "optional": true }
+        ],
+        "returns": { "type": "string|false", "description": "Cart item key on success, false on failure." },
+        "since": "1.0.0",
+        "deprecated": null,
+        "file": "includes/cart.php",
+        "line": 88
+      },
+      {
+        "name": "wct_get_cart",
+        "description": "Get the current cart instance for the active session.",
+        "params": [],
+        "returns": { "type": "WCT_Cart", "description": "The cart singleton." },
+        "since": "1.0.0",
+        "deprecated": null,
+        "file": "includes/cart.php",
+        "line": 25
+      },
+      {
+        "name": "wct_format_price",
+        "description": "Format a numeric price value according to the store's currency settings.",
+        "params": [
+          { "name": "$amount", "type": "float", "description": "Raw numeric price.", "optional": false },
+          { "name": "$currency", "type": "string", "description": "Currency code (e.g. 'USD'). Defaults to store currency.", "optional": true }
+        ],
+        "returns": { "type": "string", "description": "Formatted price string, e.g. '$49.99'." },
+        "since": "1.0.0",
+        "deprecated": null,
+        "file": "includes/formatting.php",
+        "line": 15
+      },
+      {
+        "name": "wct_create_order",
+        "description": "Create a new order from the current cart contents and customer data.",
+        "params": [
+          { "name": "$customer_data", "type": "array", "description": "Billing and shipping address fields.", "optional": false },
+          { "name": "$payment_method", "type": "string", "description": "Payment gateway ID.", "optional": false }
+        ],
+        "returns": { "type": "WCT_Order|WP_Error", "description": "Order object on success, WP_Error on failure." },
+        "since": "1.2.0",
+        "deprecated": null,
+        "file": "includes/orders.php",
+        "line": 134
+      },
+      {
+        "name": "wct_get_order",
+        "description": "Retrieve an order by ID.",
+        "params": [
+          { "name": "$order_id", "type": "int", "description": "The order post ID.", "optional": false }
+        ],
+        "returns": { "type": "WCT_Order|null", "description": "Order object or null." },
+        "since": "1.2.0",
+        "deprecated": null,
+        "file": "includes/orders.php",
+        "line": 62
+      },
+      {
+        "name": "wct_register_payment_gateway",
+        "description": "Register a custom payment gateway class with the checkout system.",
+        "params": [
+          { "name": "$gateway_class", "type": "string", "description": "Fully-qualified class name extending WCT_Payment_Gateway.", "optional": false }
+        ],
+        "returns": { "type": "void", "description": "" },
+        "since": "1.4.0",
+        "deprecated": null,
+        "file": "includes/payments.php",
+        "line": 28
+      },
+      {
+        "name": "wct_get_template",
+        "description": "Load a template file from the plugin's templates directory, with theme override support.",
+        "params": [
+          { "name": "$template_name", "type": "string", "description": "Template file name relative to templates/ dir.", "optional": false },
+          { "name": "$args", "type": "array", "description": "Variables to extract into template scope.", "optional": true }
+        ],
+        "returns": { "type": "void", "description": "" },
+        "since": "1.0.0",
+        "deprecated": null,
+        "file": "includes/template-loader.php",
+        "line": 55
+      },
+      {
+        "name": "wct_get_currency_symbol",
+        "description": "Get the symbol for a given currency code.",
+        "params": [
+          { "name": "$currency_code", "type": "string", "description": "ISO 4217 currency code.", "optional": false }
+        ],
+        "returns": { "type": "string", "description": "Currency symbol (e.g. '$', '€')." },
+        "since": "1.0.0",
+        "deprecated": null,
+        "file": "includes/formatting.php",
+        "line": 72
+      },
+      {
+        "name": "wct_get_cart_total",
+        "description": "Calculate and return the current cart total including tax and discounts.",
+        "params": [],
+        "returns": { "type": "float", "description": "Cart total as a float." },
+        "since": "1.0.0",
+        "deprecated": "2.0.0",
+        "file": "includes/cart.php",
+        "line": 195
+      },
+      {
+        "name": "wct_apply_coupon",
+        "description": "Apply a coupon code to the current cart.",
+        "params": [
+          { "name": "$coupon_code", "type": "string", "description": "The coupon code to apply.", "optional": false }
+        ],
+        "returns": { "type": "bool|WP_Error", "description": "True on success, WP_Error on failure." },
+        "since": "1.6.0",
+        "deprecated": null,
+        "file": "includes/coupons.php",
+        "line": 44
+      },
+      {
+        "name": "wct_is_purchasable",
+        "description": "Check whether a product can be purchased (in stock, published, price > 0).",
+        "params": [
+          { "name": "$product_id", "type": "int", "description": "Product ID.", "optional": false }
+        ],
+        "returns": { "type": "bool", "description": "Whether the product is purchasable." },
+        "since": "1.0.0",
+        "deprecated": null,
+        "file": "includes/products.php",
+        "line": 118
+      }
+    ],
+    "classes": [
+      {
+        "name": "WCT_Product",
+        "description": "Core product data model. Represents a single product with pricing, inventory, and metadata.",
+        "extends": null,
+        "implements": ["JsonSerializable"],
+        "isAbstract": false,
+        "isFinal": false,
+        "isInterface": false,
+        "isTrait": false,
+        "since": "1.0.0",
+        "methods": [
+          { "name": "get_id", "description": "Get the product ID.", "visibility": "public", "isStatic": false, "since": "1.0.0", "file": "includes/class-wct-product.php", "line": 45 },
+          { "name": "get_name", "description": "Get the product name.", "visibility": "public", "isStatic": false, "since": "1.0.0", "file": "includes/class-wct-product.php", "line": 55 },
+          { "name": "get_price", "description": "Get the product price.", "visibility": "public", "isStatic": false, "since": "1.0.0", "file": "includes/class-wct-product.php", "line": 65 },
+          { "name": "get_sale_price", "description": "Get the sale price if set.", "visibility": "public", "isStatic": false, "since": "1.2.0", "file": "includes/class-wct-product.php", "line": 75 },
+          { "name": "is_on_sale", "description": "Check whether the product is currently on sale.", "visibility": "public", "isStatic": false, "since": "1.2.0", "file": "includes/class-wct-product.php", "line": 85 },
+          { "name": "is_in_stock", "description": "Check stock availability.", "visibility": "public", "isStatic": false, "since": "1.0.0", "file": "includes/class-wct-product.php", "line": 95 },
+          { "name": "get_stock_quantity", "description": "Get available stock count.", "visibility": "public", "isStatic": false, "since": "1.4.0", "file": "includes/class-wct-product.php", "line": 105 }
+        ],
+        "file": "includes/class-wct-product.php",
+        "line": 18
+      },
+      {
+        "name": "WCT_Cart",
+        "description": "Shopping cart manager. Handles session-based cart storage, item management, and total calculations.",
+        "extends": null,
+        "implements": ["Countable", "IteratorAggregate"],
+        "isAbstract": false,
+        "isFinal": false,
+        "isInterface": false,
+        "isTrait": false,
+        "since": "1.0.0",
+        "methods": [
+          { "name": "instance", "description": "Get the cart singleton instance.", "visibility": "public", "isStatic": true, "since": "1.0.0", "file": "includes/class-wct-cart.php", "line": 32 },
+          { "name": "add_item", "description": "Add a product to the cart.", "visibility": "public", "isStatic": false, "since": "1.0.0", "file": "includes/class-wct-cart.php", "line": 55 },
+          { "name": "remove_item", "description": "Remove an item by its cart key.", "visibility": "public", "isStatic": false, "since": "1.0.0", "file": "includes/class-wct-cart.php", "line": 88 },
+          { "name": "get_total", "description": "Calculate the cart total with tax and discounts.", "visibility": "public", "isStatic": false, "since": "1.0.0", "file": "includes/class-wct-cart.php", "line": 115 },
+          { "name": "get_subtotal", "description": "Get pre-tax, pre-discount subtotal.", "visibility": "public", "isStatic": false, "since": "1.0.0", "file": "includes/class-wct-cart.php", "line": 140 },
+          { "name": "empty_cart", "description": "Remove all items from the cart.", "visibility": "public", "isStatic": false, "since": "1.0.0", "file": "includes/class-wct-cart.php", "line": 160 }
+        ],
+        "file": "includes/class-wct-cart.php",
+        "line": 15
+      },
+      {
+        "name": "WCT_Order",
+        "description": "Order data model. Wraps a WP post of type 'wct_order' with commerce-specific accessors.",
+        "extends": null,
+        "implements": ["JsonSerializable"],
+        "isAbstract": false,
+        "isFinal": false,
+        "isInterface": false,
+        "isTrait": false,
+        "since": "1.2.0",
+        "methods": [
+          { "name": "get_id", "description": "Get the order ID.", "visibility": "public", "isStatic": false, "since": "1.2.0", "file": "includes/class-wct-order.php", "line": 30 },
+          { "name": "get_status", "description": "Get the order status.", "visibility": "public", "isStatic": false, "since": "1.2.0", "file": "includes/class-wct-order.php", "line": 40 },
+          { "name": "get_total", "description": "Get the order total.", "visibility": "public", "isStatic": false, "since": "1.2.0", "file": "includes/class-wct-order.php", "line": 50 },
+          { "name": "get_items", "description": "Get line items for this order.", "visibility": "public", "isStatic": false, "since": "1.2.0", "file": "includes/class-wct-order.php", "line": 60 },
+          { "name": "update_status", "description": "Transition the order to a new status.", "visibility": "public", "isStatic": false, "since": "1.2.0", "file": "includes/class-wct-order.php", "line": 75 }
+        ],
+        "file": "includes/class-wct-order.php",
+        "line": 12
+      },
+      {
+        "name": "WCT_Payment_Gateway",
+        "description": "Abstract base class for payment gateway integrations. Extend this to add new payment methods.",
+        "extends": null,
+        "implements": [],
+        "isAbstract": true,
+        "isFinal": false,
+        "isInterface": false,
+        "isTrait": false,
+        "since": "1.4.0",
+        "methods": [
+          { "name": "get_id", "description": "Return the gateway identifier slug.", "visibility": "public", "isStatic": false, "since": "1.4.0", "file": "includes/abstracts/class-wct-payment-gateway.php", "line": 25 },
+          { "name": "get_title", "description": "Return the human-readable gateway title.", "visibility": "public", "isStatic": false, "since": "1.4.0", "file": "includes/abstracts/class-wct-payment-gateway.php", "line": 35 },
+          { "name": "process_payment", "description": "Process a payment for the given order. Must be implemented by subclasses.", "visibility": "public", "isStatic": false, "since": "1.4.0", "file": "includes/abstracts/class-wct-payment-gateway.php", "line": 50 },
+          { "name": "process_refund", "description": "Process a refund for an order.", "visibility": "public", "isStatic": false, "since": "1.6.0", "file": "includes/abstracts/class-wct-payment-gateway.php", "line": 70 }
+        ],
+        "file": "includes/abstracts/class-wct-payment-gateway.php",
+        "line": 10
+      },
+      {
+        "name": "WCT_REST_Controller",
+        "description": "Base REST API controller providing shared utilities for all WCT endpoints.",
+        "extends": "WP_REST_Controller",
+        "implements": [],
+        "isAbstract": true,
+        "isFinal": false,
+        "isInterface": false,
+        "isTrait": false,
+        "since": "2.0.0",
+        "methods": [
+          { "name": "register_routes", "description": "Register REST routes. Subclasses must implement.", "visibility": "public", "isStatic": false, "since": "2.0.0", "file": "includes/rest/class-wct-rest-controller.php", "line": 22 },
+          { "name": "get_item_schema", "description": "Get the JSON schema for a single resource.", "visibility": "public", "isStatic": false, "since": "2.0.0", "file": "includes/rest/class-wct-rest-controller.php", "line": 35 },
+          { "name": "check_permissions", "description": "Shared capability check for write operations.", "visibility": "protected", "isStatic": false, "since": "2.0.0", "file": "includes/rest/class-wct-rest-controller.php", "line": 48 }
+        ],
+        "file": "includes/rest/class-wct-rest-controller.php",
+        "line": 8
+      }
+    ],
+    "hooks": {
+      "actions": [
+        {
+          "name": "wct_cart_item_added",
+          "type": "action",
+          "usage": "dispatch",
+          "description": "Fires after a product is successfully added to the cart.",
+          "priority": null,
+          "acceptedArgs": null,
+          "dispatchArgCount": 3,
+          "file": "includes/cart.php",
+          "line": 112
+        },
+        {
+          "name": "wct_cart_emptied",
+          "type": "action",
+          "usage": "dispatch",
+          "description": "Fires after the cart is completely emptied.",
+          "priority": null,
+          "acceptedArgs": null,
+          "dispatchArgCount": 1,
+          "file": "includes/class-wct-cart.php",
+          "line": 168
+        },
+        {
+          "name": "wct_order_status_changed",
+          "type": "action",
+          "usage": "dispatch",
+          "description": "Fires when an order transitions to a new status.",
+          "priority": null,
+          "acceptedArgs": null,
+          "dispatchArgCount": 3,
+          "file": "includes/class-wct-order.php",
+          "line": 85
+        },
+        {
+          "name": "wct_before_checkout",
+          "type": "action",
+          "usage": "dispatch",
+          "description": "Fires before checkout processing begins.",
+          "priority": null,
+          "acceptedArgs": null,
+          "dispatchArgCount": 2,
+          "file": "includes/checkout.php",
+          "line": 44
+        },
+        {
+          "name": "wct_after_checkout",
+          "type": "action",
+          "usage": "dispatch",
+          "description": "Fires after checkout is complete and the order is created.",
+          "priority": null,
+          "acceptedArgs": null,
+          "dispatchArgCount": 2,
+          "file": "includes/checkout.php",
+          "line": 98
+        },
+        {
+          "name": "wct_payment_complete",
+          "type": "action",
+          "usage": "dispatch",
+          "description": "Fires after a payment gateway returns success.",
+          "priority": null,
+          "acceptedArgs": null,
+          "dispatchArgCount": 2,
+          "file": "includes/payments.php",
+          "line": 112
+        },
+        {
+          "name": "wct_init",
+          "type": "action",
+          "usage": "dispatch",
+          "description": "Fires when the WCT plugin has fully initialized. Safe to register gateways and extend.",
+          "priority": null,
+          "acceptedArgs": null,
+          "dispatchArgCount": 0,
+          "file": "wp-commerce-toolkit.php",
+          "line": 55
+        },
+        {
+          "name": "wct_send_order_email",
+          "type": "action",
+          "usage": "registration",
+          "description": "Sends order confirmation email to the customer.",
+          "priority": 10,
+          "acceptedArgs": 2,
+          "dispatchArgCount": null,
+          "file": "includes/emails.php",
+          "line": 30
+        },
+        {
+          "name": "wct_update_stock",
+          "type": "action",
+          "usage": "registration",
+          "description": "Reduces stock quantities when an order is placed.",
+          "priority": 10,
+          "acceptedArgs": 1,
+          "dispatchArgCount": null,
+          "file": "includes/inventory.php",
+          "line": 18
+        },
+        {
+          "name": "wct_clear_cart_after_order",
+          "type": "action",
+          "usage": "registration",
+          "description": "Empties the cart after a successful order.",
+          "priority": 20,
+          "acceptedArgs": 1,
+          "dispatchArgCount": null,
+          "file": "includes/cart.php",
+          "line": 210
+        }
+      ],
+      "filters": [
+        {
+          "name": "wct_product_price",
+          "type": "filter",
+          "usage": "dispatch",
+          "description": "Filters the final display price of a product.",
+          "priority": null,
+          "acceptedArgs": null,
+          "dispatchArgCount": 2,
+          "file": "includes/class-wct-product.php",
+          "line": 68
+        },
+        {
+          "name": "wct_cart_item_data",
+          "type": "filter",
+          "usage": "dispatch",
+          "description": "Filters the data stored for a cart item before it's added.",
+          "priority": null,
+          "acceptedArgs": null,
+          "dispatchArgCount": 3,
+          "file": "includes/cart.php",
+          "line": 96
+        },
+        {
+          "name": "wct_order_statuses",
+          "type": "filter",
+          "usage": "dispatch",
+          "description": "Filters the list of available order statuses.",
+          "priority": null,
+          "acceptedArgs": null,
+          "dispatchArgCount": 1,
+          "file": "includes/orders.php",
+          "line": 22
+        },
+        {
+          "name": "wct_currency_symbol",
+          "type": "filter",
+          "usage": "dispatch",
+          "description": "Filters the currency symbol for a given currency code.",
+          "priority": null,
+          "acceptedArgs": null,
+          "dispatchArgCount": 2,
+          "file": "includes/formatting.php",
+          "line": 80
+        },
+        {
+          "name": "wct_available_gateways",
+          "type": "filter",
+          "usage": "dispatch",
+          "description": "Filters the list of available payment gateways at checkout.",
+          "priority": null,
+          "acceptedArgs": null,
+          "dispatchArgCount": 1,
+          "file": "includes/payments.php",
+          "line": 42
+        },
+        {
+          "name": "wct_format_price_html",
+          "type": "filter",
+          "usage": "dispatch",
+          "description": "Filters the final HTML output of a formatted price.",
+          "priority": null,
+          "acceptedArgs": null,
+          "dispatchArgCount": 3,
+          "file": "includes/formatting.php",
+          "line": 35
+        },
+        {
+          "name": "wct_checkout_fields",
+          "type": "filter",
+          "usage": "dispatch",
+          "description": "Filters the checkout form field configuration.",
+          "priority": null,
+          "acceptedArgs": null,
+          "dispatchArgCount": 1,
+          "file": "includes/checkout.php",
+          "line": 28
+        },
+        {
+          "name": "wct_tax_rate",
+          "type": "filter",
+          "usage": "registration",
+          "description": "Adjusts the tax rate based on customer location.",
+          "priority": 10,
+          "acceptedArgs": 3,
+          "dispatchArgCount": null,
+          "file": "includes/tax.php",
+          "line": 15
+        }
+      ]
+    },
+    "cssTokens": [
+      { "name": "--wct-color-primary", "value": "#2563eb", "description": "Primary brand color used for buttons and links.", "scope": ":root", "file": "assets/css/frontend.css", "line": 3 },
+      { "name": "--wct-color-primary-hover", "value": "#1d4ed8", "description": "Hover state for primary color.", "scope": ":root", "file": "assets/css/frontend.css", "line": 4 },
+      { "name": "--wct-color-success", "value": "#16a34a", "description": "Success state color (e.g. order confirmation).", "scope": ":root", "file": "assets/css/frontend.css", "line": 5 },
+      { "name": "--wct-color-error", "value": "#dc2626", "description": "Error state color (e.g. validation messages).", "scope": ":root", "file": "assets/css/frontend.css", "line": 6 },
+      { "name": "--wct-color-warning", "value": "#d97706", "description": "Warning state color.", "scope": ":root", "file": "assets/css/frontend.css", "line": 7 },
+      { "name": "--wct-color-bg", "value": "#ffffff", "description": "Base background color.", "scope": ":root", "file": "assets/css/frontend.css", "line": 8 },
+      { "name": "--wct-color-surface", "value": "#f8fafc", "description": "Elevated surface color for cards.", "scope": ":root", "file": "assets/css/frontend.css", "line": 9 },
+      { "name": "--wct-color-text", "value": "#0f172a", "description": "Primary text color.", "scope": ":root", "file": "assets/css/frontend.css", "line": 10 },
+      { "name": "--wct-color-muted", "value": "#64748b", "description": "Secondary/muted text color.", "scope": ":root", "file": "assets/css/frontend.css", "line": 11 },
+      { "name": "--wct-color-border", "value": "#e2e8f0", "description": "Default border color.", "scope": ":root", "file": "assets/css/frontend.css", "line": 12 },
+      { "name": "--wct-radius-sm", "value": "4px", "description": "Small border radius for inputs.", "scope": ":root", "file": "assets/css/frontend.css", "line": 14 },
+      { "name": "--wct-radius-md", "value": "8px", "description": "Medium border radius for cards.", "scope": ":root", "file": "assets/css/frontend.css", "line": 15 },
+      { "name": "--wct-radius-lg", "value": "12px", "description": "Large border radius for modals.", "scope": ":root", "file": "assets/css/frontend.css", "line": 16 },
+      { "name": "--wct-font-sans", "value": "'Inter', system-ui, sans-serif", "description": "Primary sans-serif font stack.", "scope": ":root", "file": "assets/css/frontend.css", "line": 18 },
+      { "name": "--wct-font-mono", "value": "'JetBrains Mono', monospace", "description": "Monospace font for code and prices.", "scope": ":root", "file": "assets/css/frontend.css", "line": 19 },
+      { "name": "--wct-shadow-sm", "value": "0 1px 2px rgba(0,0,0,0.05)", "description": "Subtle shadow for inputs.", "scope": ":root", "file": "assets/css/frontend.css", "line": 21 },
+      { "name": "--wct-shadow-md", "value": "0 4px 6px -1px rgba(0,0,0,0.1)", "description": "Card-level shadow.", "scope": ":root", "file": "assets/css/frontend.css", "line": 22 },
+      { "name": "--wct-cart-bg", "value": "#ffffff", "description": "Cart widget background.", "scope": ".wct-cart-widget", "file": "assets/css/cart.css", "line": 5 },
+      { "name": "--wct-cart-border", "value": "#e2e8f0", "description": "Cart widget border.", "scope": ".wct-cart-widget", "file": "assets/css/cart.css", "line": 6 },
+      { "name": "--wct-checkout-accent", "value": "#2563eb", "description": "Accent color for checkout form focus states.", "scope": ".wct-checkout", "file": "assets/css/checkout.css", "line": 3 }
+    ],
+    "js": {
+      "functions": []
+    },
+    "readme": {
+      "changelog": [
+        {
+          "version": "2.4.0",
+          "notes": [
+            "Added coupon system with percentage and fixed-amount discounts.",
+            "New `wct_apply_coupon()` function and coupon management UI.",
+            "Improved checkout field validation with inline error messages."
+          ]
+        },
+        {
+          "version": "2.3.0",
+          "notes": [
+            "Added REST API endpoints for products and orders.",
+            "New `WCT_REST_Controller` base class for API extensions.",
+            "Improved cart session handling for logged-out users."
+          ]
+        },
+        {
+          "version": "2.0.0",
+          "notes": [
+            "Major refactor of the order system — orders are now a custom post type.",
+            "Deprecated `wct_get_cart_total()` in favor of `WCT_Cart::get_total()`.",
+            "Added stock management and low-stock notifications.",
+            "New tax calculation system with location-based rates."
+          ]
+        },
+        {
+          "version": "1.6.0",
+          "notes": [
+            "Added refund support via `process_refund()` on payment gateways.",
+            "New `wct_checkout_fields` filter for customizing checkout forms.",
+            "Performance improvements to cart total calculations."
+          ]
+        },
+        {
+          "version": "1.4.0",
+          "notes": [
+            "Introduced the payment gateway API — extend `WCT_Payment_Gateway` to add custom methods.",
+            "Added `wct_register_payment_gateway()` and `wct_available_gateways` filter.",
+            "Stock quantity tracking on products."
+          ]
+        },
+        {
+          "version": "1.2.0",
+          "notes": [
+            "New order system with `WCT_Order` class.",
+            "Checkout flow with `wct_before_checkout` and `wct_after_checkout` actions.",
+            "Sale price support on products."
+          ]
+        },
+        {
+          "version": "1.0.0",
+          "notes": [
+            "Initial release.",
+            "Product management, cart system, basic checkout.",
+            "Template system with theme override support.",
+            "Currency formatting utilities."
+          ]
+        }
+      ]
+    }
+  },
+  "nav": [
+    {
+      "title": "Overview",
+      "slug": "overview",
+      "items": [
+        { "title": "Home", "href": "/" }
+      ]
+    },
+    {
+      "title": "PHP Reference",
+      "slug": "php",
+      "items": [
+        { "title": "Functions", "href": "/php/functions/", "badge": "12" },
+        { "title": "Classes", "href": "/php/classes/", "badge": "5" }
+      ]
+    },
+    {
+      "title": "Hooks",
+      "slug": "hooks",
+      "items": [
+        { "title": "Actions", "href": "/hooks/actions/", "badge": "10" },
+        { "title": "Filters", "href": "/hooks/filters/", "badge": "8" }
+      ]
+    },
+    {
+      "title": "CSS / Design Tokens",
+      "slug": "css",
+      "items": [
+        { "title": "Tokens", "href": "/css/tokens/", "badge": "20" }
+      ]
+    },
+    {
+      "title": "Changelog",
+      "slug": "changelog",
+      "items": [
+        { "title": "Changelog", "href": "/changelog/" }
+      ]
+    }
+  ]
+}

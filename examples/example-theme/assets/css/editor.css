@@ -1,0 +1,54 @@
+/**
+ * Example Theme — Editor Styles
+ *
+ * Styles applied inside the WordPress block editor to give content authors
+ * a preview that closely matches the front-end appearance. Loaded via
+ * `add_editor_style()` in functions.php.
+ *
+ * @package   ExampleTheme
+ * @since     1.0.0
+ */
+
+:root {
+  /** @token Editor content area max width. */
+  --example-theme-editor-content-width: 960px;
+
+  /** @token Editor block spacing applied between blocks. */
+  --example-theme-editor-block-gap: 1.5rem;
+}
+
+.editor-styles-wrapper {
+  font-family:
+    'Inter',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #1f2937;
+}
+
+.editor-styles-wrapper h1,
+.editor-styles-wrapper h2,
+.editor-styles-wrapper h3,
+.editor-styles-wrapper h4 {
+  font-family: 'Lexend', system-ui, sans-serif;
+  font-weight: 700;
+}
+
+.editor-styles-wrapper a {
+  color: #1d4ed8;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.editor-styles-wrapper a:hover {
+  color: #9333ea;
+}
+
+.editor-styles-wrapper blockquote {
+  border-left: 4px solid #1d4ed8;
+  padding-left: 1rem;
+  color: #6b7280;
+  font-style: italic;
+}

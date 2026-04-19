@@ -1,0 +1,16 @@
+{
+  "name": "Test Custom Theme",
+  "description": "A custom theme for testing",
+  "cssVars": {
+    "--color-primary": "#e11d48",
+    "--color-primary-dark": "#be123c",
+    "--color-bg": "#ffffff",
+    "--color-bg-secondary": "#fafafa",
+    "--color-text": "#111827",
+    "--color-text-muted": "#6b7280",
+    "--color-border": "#e5e7eb",
+    "--color-code-bg": "#f3f4f6",
+    "--font-sans": "Inter, sans-serif",
+    "--font-mono": "monospace"
+  }
+}

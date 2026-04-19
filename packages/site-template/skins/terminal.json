@@ -1,0 +1,60 @@
+{
+  "name": "Terminal",
+  "tokens": {
+    "color": {
+      "bg": "#f4f4f5",
+      "fg": "#18181b",
+      "accent": "#16a34a",
+      "accent-fg": "#ffffff",
+      "accent-hover": "#15803d",
+      "accent-subtle": "#f0fdf4",
+      "muted": "#71717a",
+      "border": "#e4e4e7",
+      "code-bg": "#0a0a0a",
+      "code-fg": "#d4d4d8",
+      "sidebar-bg": "#eef2ee",
+      "sidebar-active": "#dcfce7",
+      "surface": "#eef2ee",
+      "vis-public-bg": "#dcfce7",
+      "vis-public-fg": "#15803d",
+      "vis-protected-bg": "#fef3c7",
+      "vis-protected-fg": "#a16207",
+      "vis-private-bg": "#fee2e2",
+      "vis-private-fg": "#b91c1c",
+      "vis-static-bg": "#e0e7ff",
+      "vis-static-fg": "#4338ca"
+    },
+    "font": {
+      "sans": "'JetBrains Mono', 'Fira Code', ui-monospace, monospace",
+      "mono": "'JetBrains Mono', 'Fira Code', ui-monospace, monospace",
+      "display": "'JetBrains Mono', 'Fira Code', ui-monospace, monospace"
+    },
+    "radius": { "sm": "0px", "md": "2px", "lg": "4px" },
+    "container": { "sidebar": "260px", "content": "760px", "toc": "220px" }
+  },
+  "dark": {
+    "color": {
+      "bg": "#0a0a0a",
+      "fg": "#d4d4d8",
+      "accent": "#22c55e",
+      "accent-fg": "#0a0a0a",
+      "accent-hover": "#4ade80",
+      "accent-subtle": "#14532d20",
+      "muted": "#71717a",
+      "border": "#1a2e1a",
+      "code-bg": "#050505",
+      "code-fg": "#d4d4d8",
+      "sidebar-bg": "#060806",
+      "sidebar-active": "#0d1a0d",
+      "surface": "#111411",
+      "vis-public-bg": "#14532d40",
+      "vis-public-fg": "#4ade80",
+      "vis-protected-bg": "#78350f40",
+      "vis-protected-fg": "#fbbf24",
+      "vis-private-bg": "#7f1d1d40",
+      "vis-private-fg": "#fca5a5",
+      "vis-static-bg": "#312e8140",
+      "vis-static-fg": "#a5b4fc"
+    }
+  }
+}
